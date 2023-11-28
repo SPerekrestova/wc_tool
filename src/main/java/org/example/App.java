@@ -30,18 +30,19 @@ public class App {
             countWords(foundFile, file);
             countChars(foundFile, file);
         } else {
-            String option = arguments[1];
+            Option option = Option.find(arguments[1]);
             String file = arguments[2];
             foundFile = getFile(file);
 
-            if (option.equals("-c")) { // bytes
-                countBytes(foundFile, file);
-            } else if (option.equals("-l")) { // lines count
-                countLines(foundFile, file);
-            } else if (option.equals("-w")) { // words count
-                countWords(foundFile, file);
-            } else if (option.equals("-m")) { // count chars
-                countChars(foundFile, file);
+            switch (option) {
+                case BYTES ->
+                        countBytes(foundFile, file);
+                case LINES ->
+                        countLines(foundFile, file);
+                case WORDS ->
+                        countWords(foundFile, file);
+                case CHARS ->
+                        countChars(foundFile, file);
             }
         }
     }
@@ -55,7 +56,7 @@ public class App {
 
     private static File getFile(String file) {
         System.out.println("Looking for a file: " + file);
-        return FileUtils.listFiles(new File("/Users/svetlana/IdeaProjects/wc_tool"),
+        return FileUtils.listFiles(new File(System.getProperty("user.dir")),
                 new NameFileFilter(file),
                 FileFilterUtils.trueFileFilter()
         ).iterator().next();
